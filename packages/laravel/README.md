@@ -45,9 +45,9 @@ $response = Fel::issue(
 echo $response->uuid();
 ```
 
-## FEL Studio (Desarrollo)
+## FEL Studio (Herramientas para Desarrolladores)
 
-A partir de la versión v1.1.0, el adaptador incluye **FEL Studio**, un panel visual diseñado exclusivamente para el entorno local. Te permite observar el flujo de la facturación en tiempo real, visualizar errores de Infile de forma legible e inspeccionar las peticiones XML sin necesidad de configurar una base de datos compleja (utiliza SQLite).
+A partir de la versión v1.1.0, el adaptador incluye **FEL Studio**, un entorno visual enfocado exclusivamente en mejorar la experiencia del desarrollador (DX) durante la integración del SDK. Al igual que herramientas como Laravel Telescope, opera **únicamente en tu entorno local** y no requiere configurar bases de datos adicionales (utiliza SQLite en memoria o archivos locales de forma transparente).
 
 ### Acceder al Studio
 
