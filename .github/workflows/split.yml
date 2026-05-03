@@ -21,6 +21,8 @@ jobs:
             split_repository: 'infile-php-laravel'
           - local_path: 'packages/symfony'
             split_repository: 'infile-php-symfony'
+          - local_path: 'packages/wordpress'
+            split_repository: 'infile-php-wordpress'
 
     steps:
       - uses: actions/checkout@v4
