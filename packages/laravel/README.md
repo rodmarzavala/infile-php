@@ -4,31 +4,31 @@
 [![PHP Version Require](https://img.shields.io/packagist/php-v/rodmarzavala/infile-php-laravel)](https://packagist.org/packages/rodmarzavala/infile-php-laravel)
 [![License](https://img.shields.io/packagist/l/rodmarzavala/infile-php-laravel)](https://packagist.org/packages/rodmarzavala/infile-php-laravel)
 
-The official Laravel adapter for the `infile-php` Guatemala FEL (Factura Electrónica en Línea) SDK.
+El adaptador oficial para Laravel del SDK `infile-php` para facturación electrónica en línea (FEL) en Guatemala.
 
-> **Note:** This repository is a read-only split of the main `infile-php` monorepo. Please submit issues and pull requests to the [main repository](https://github.com/rodmarzavala/infile-php).
+> **Nota:** Este repositorio es una división de solo lectura (read-only split) del monorepo principal `infile-php`. Por favor, envía tus *issues* y *pull requests* al [repositorio principal](https://github.com/rodmarzavala/infile-php).
 
-## Installation
+## Instalación
 
 ```bash
 composer require rodmarzavala/infile-php-laravel
 ```
 
-Publish the configuration file:
+Publica el archivo de configuración:
 
 ```bash
 php artisan fel:install
 ```
 
-## Documentation
+## Documentación
 
-For full documentation, configuration options, and API reference, please visit our official documentation site:
+Para acceder a la documentación completa, opciones de configuración y referencia de la API, por favor visita nuestro sitio oficial:
 
-**👉 [Official Documentation (rodmarzavala.github.io/infile-php)](https://rodmarzavala.github.io/infile-php/)**
+**👉 [Documentación Oficial (rodmarzavala.github.io/infile-php)](https://rodmarzavala.github.io/infile-php/)**
 
-## Usage Example
+## Ejemplo de Uso
 
-Use the intuitive `Fel` facade directly in your controllers or jobs:
+Utiliza el *Facade* intuitivo `Fel` directamente en tus controladores o *jobs*:
 
 ```php
 use InfilePhp\Laravel\Facades\Fel;

@@ -6,6 +6,10 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es/1.0.
 
 ---
 
+## [1.0.8] - 2026-05-03
+### Modificado
+- Traducción de los README de sub-paquetes al español profesional.
+
 ## [1.0.7] - 2026-05-03
 ### Agregado
 - Archivos README dedicados para cada sub-paquete (Core, Laravel, Symfony) para publicación en Packagist.

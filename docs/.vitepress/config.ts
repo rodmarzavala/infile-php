@@ -23,9 +23,9 @@ export default defineConfig({
       { text: 'API', link: '/api/invoice' },
       { text: 'Changelog', link: '/changelog' },
       {
-        text: 'v1.0.7',
+        text: 'v1.0.8',
         items: [
-          { text: 'v1.0.7 (actual)', link: '/changelog' },
+          { text: 'v1.0.8 (actual)', link: '/changelog' },
           { text: 'Hoja de ruta', link: '/hoja-de-ruta' },
         ],
       },
