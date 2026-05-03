@@ -8,7 +8,7 @@ hero:
   actions:
     - theme: brand
       text: Inicio Rápido
-      link: /guide/getting-started
+      link: /guia/inicio-rapido
     - theme: alt
       text: Ver en GitHub
       link: https://github.com/rodmarzavala/infile-php

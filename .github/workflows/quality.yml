@@ -7,10 +7,9 @@ on:
     branches: [ "main" ]
 
 jobs:
-  analyze:
-    name: Code Quality & Static Analysis
+  security:
+    name: Security Audit
     runs-on: ubuntu-latest
-    
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -19,17 +18,72 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.2'
+          coverage: none
+
+      - name: Install Dependencies
+        run: composer update --prefer-dist --no-progress
+
+      - name: Composer Audit
+        run: composer audit
+
+  lint:
+    name: Code Style (PHP CS Fixer)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          coverage: none
+
+      - name: Install Dependencies
+        run: composer update --prefer-dist --no-progress
+
+      - name: PHP CS Fixer
+        run: vendor/bin/php-cs-fixer fix --dry-run --allow-risky=yes --diff
+
+  static-analysis:
+    name: Static Analysis (PHPStan)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          coverage: none
+
+      - name: Install Dependencies
+        run: composer update --prefer-dist --no-progress
+
+      - name: PHPStan Level 9
+        run: vendor/bin/phpstan analyse packages/core/src --level=9 --no-progress
+
+  tests:
+    name: Test Suite (PHP ${{ matrix.php }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.2', '8.3', '8.4']
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
           extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, bcmath, soap, intl, gd, exif, iconv
           coverage: none
 
       - name: Install Dependencies
-        run: composer install --prefer-dist --no-progress
+        run: composer update --prefer-dist --no-progress
 
-      - name: PHP CS Fixer (Code Style)
-        run: vendor/bin/php-cs-fixer fix --dry-run --allow-risky=yes --diff
-
-      - name: PHPStan (Static Analysis Level 9)
-        run: vendor/bin/phpstan analyse packages/core/src --level=9 --no-progress
-
-      - name: Pest PHP (Unit & Feature Tests)
+      - name: Run Pest Tests
         run: cd packages/core && vendor/bin/pest
