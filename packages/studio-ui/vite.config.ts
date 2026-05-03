@@ -7,7 +7,7 @@ export default defineConfig({
   plugins: [react(), tailwindcss()],
   base: '/fel-studio/',
   build: {
-    outDir: 'dist',
+    outDir: '../laravel/resources/studio-ui',
     emptyOutDir: true
   }
 })
