@@ -4,7 +4,7 @@
 [![PHP Version Require](https://img.shields.io/packagist/php-v/rodmarzavala/infile-php-laravel)](https://packagist.org/packages/rodmarzavala/infile-php-laravel)
 [![License](https://img.shields.io/packagist/l/rodmarzavala/infile-php-laravel)](https://packagist.org/packages/rodmarzavala/infile-php-laravel)
 
-El adaptador oficial para Laravel del SDK `infile-php` para facturación electrónica en línea (FEL) en Guatemala.
+El adaptador nativo para Laravel del SDK `infile-php` para facturación electrónica en línea (FEL) en Guatemala.
 
 > **Nota:** Este repositorio es una división de solo lectura (read-only split) del monorepo principal `infile-php`. Por favor, envía tus *issues* y *pull requests* al [repositorio principal](https://github.com/rodmarzavala/infile-php).
 
@@ -22,9 +22,9 @@ php artisan fel:install
 
 ## Documentación
 
-Para acceder a la documentación completa, opciones de configuración y referencia de la API, por favor visita nuestro sitio oficial:
+Para acceder a la documentación completa, opciones de configuración y referencia de la API, por favor visita nuestro sitio:
 
-**👉 [Documentación Oficial (rodmarzavala.github.io/infile-php)](https://rodmarzavala.github.io/infile-php/)**
+**👉 [Documentación del SDK (rodmarzavala.github.io/infile-php)](https://rodmarzavala.github.io/infile-php/)**
 
 ## Ejemplo de Uso
 

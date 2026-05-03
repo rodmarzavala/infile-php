@@ -6,6 +6,10 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es/1.0.
 
 ---
 
+## [1.0.9] - 2026-05-03
+### Modificado
+- Eliminación de la palabra "oficial" en la documentación y READMEs para evitar temas legales, dejando claro que es un SDK "open-source" y "nativo" comunitario.
+
 ## [1.0.8] - 2026-05-03
 ### Modificado
 - Traducción de los README de sub-paquetes al español profesional.

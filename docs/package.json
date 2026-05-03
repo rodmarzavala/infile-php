@@ -1,7 +1,7 @@
 {
   "name": "infile-php-docs",
-  "version": "1.0.8",
-  "description": "Documentación oficial de infile-php",
+  "version": "1.0.9",
+  "description": "Documentación del SDK infile-php",
   "private": true,
   "type": "module",
   "scripts": {
