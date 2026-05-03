@@ -47,7 +47,7 @@ echo $response->uuid();
 
 ## FEL Studio (Desarrollo)
 
-A partir de la versión v1.3.0, el adaptador incluye **FEL Studio**, un panel visual diseñado exclusivamente para el entorno local. Te permite observar el flujo de la facturación en tiempo real, visualizar errores de Infile de forma legible e inspeccionar las peticiones XML sin necesidad de configurar una base de datos compleja (utiliza SQLite).
+A partir de la versión v1.1.0, el adaptador incluye **FEL Studio**, un panel visual diseñado exclusivamente para el entorno local. Te permite observar el flujo de la facturación en tiempo real, visualizar errores de Infile de forma legible e inspeccionar las peticiones XML sin necesidad de configurar una base de datos compleja (utiliza SQLite).
 
 ### Acceder al Studio
 
