@@ -65,6 +65,11 @@ final class FelServiceProvider extends ServiceProvider
         $this->app->singleton(InfileClient::class, function (): InfileClient {
             return new InfileClient($this->app->make(FelConfig::class));
         });
+
+        // Register FEL Studio only in local or testing environments
+        if ($this->app->isLocal() || $this->app->runningUnitTests()) {
+            $this->app->register(\InfilePhp\Laravel\Studio\StudioServiceProvider::class);
+        }
     }
 
     public function boot(): void

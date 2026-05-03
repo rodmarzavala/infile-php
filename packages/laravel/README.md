@@ -44,3 +44,24 @@ $response = Fel::issue(
 
 echo $response->uuid();
 ```
+
+## FEL Studio (Desarrollo)
+
+A partir de la versión v1.3.0, el adaptador incluye **FEL Studio**, un panel visual diseñado exclusivamente para el entorno local. Te permite observar el flujo de la facturación en tiempo real, visualizar errores de Infile de forma legible e inspeccionar las peticiones XML sin necesidad de configurar una base de datos compleja (utiliza SQLite).
+
+### Acceder al Studio
+
+1. Asegúrate de estar en tu entorno `local` (`APP_ENV=local`).
+2. Publica los *assets* del frontend:
+
+```bash
+php artisan vendor:publish --tag=fel-studio-assets
+```
+
+### Funciones del Studio
+
+- **Visualizador de XML (Builder):** Construye comprobantes en un formulario web y previsualiza el XML en tiempo real o valida la estructura contra las reglas de SAT sin consumir créditos de tu cuenta.
+- **Timeline en vivo:** Todas las transacciones (exitosas y fallidas) disparadas por tu código Laravel se guardan en la línea de tiempo del Studio. Se captura el Payload completo, el UUID, la Serie, y el tiempo de respuesta.
+- **Modo Interceptor:** El Studio traduce automáticamente las llamadas a Infile de tu código en *fixtures* para tus pruebas. Con un click, puedes generar bloques de código como `FelFake::assertIssued(1);` listos para pegar en tus Unit Tests.
+
+> **Nota de Seguridad:** El acceso a `/fel-studio` y a las APIs asociadas está estrictamente bloqueado en cualquier entorno que no sea `local` o `testing`. No expone rutas ni consume memoria en tu entorno de producción.

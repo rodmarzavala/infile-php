@@ -8,8 +8,10 @@
         "symplify/monorepo-builder": "^11.2"
     },
     "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3.40",
+        "orchestra/testbench": "^10.11",
         "phpstan/phpstan": "^1.10",
-        "friendsofphp/php-cs-fixer": "^3.40"
+        "phpunit/phpunit": "^11.5"
     },
     "repositories": [
         {"type": "path", "url": "packages/core"},
@@ -23,6 +25,11 @@
             "InfilePhp\\Laravel\\": "packages/laravel/src/",
             "InfilePhp\\Symfony\\": "packages/symfony/src/",
             "InfilePhp\\Wordpress\\": "packages/wordpress/src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "InfilePhp\\Laravel\\Tests\\": "packages/laravel/tests/"
         }
     },
     "minimum-stability": "dev",
