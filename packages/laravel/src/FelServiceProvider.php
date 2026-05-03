@@ -14,6 +14,9 @@ use InfilePhp\Core\InfilePhp;
 use InfilePhp\Laravel\Console\InstallCommand;
 use InfilePhp\Laravel\Console\RetryPendingCommand;
 use InfilePhp\Laravel\Console\StatusCommand;
+use Psr\Http\Client\ClientInterface;
+use Psr\Http\Message\RequestFactoryInterface;
+use Psr\Http\Message\StreamFactoryInterface;
 
 /**
  * Laravel service provider for infile-php.
@@ -62,8 +65,28 @@ final class FelServiceProvider extends ServiceProvider
             );
         });
 
+        $this->app->singleton(ClientInterface::class, function (): ClientInterface {
+            return new \GuzzleHttp\Client([
+                'connect_timeout' => 5,
+                'timeout'         => 30,
+            ]);
+        });
+
+        $this->app->singleton(RequestFactoryInterface::class, function (): RequestFactoryInterface {
+            return new \GuzzleHttp\Psr7\HttpFactory();
+        });
+
+        $this->app->singleton(StreamFactoryInterface::class, function (): StreamFactoryInterface {
+            return new \GuzzleHttp\Psr7\HttpFactory();
+        });
+
         $this->app->singleton(InfileClient::class, function (): InfileClient {
-            return new InfileClient($this->app->make(FelConfig::class));
+            return new InfileClient(
+                $this->app->make(FelConfig::class),
+                $this->app->make(ClientInterface::class),
+                $this->app->make(RequestFactoryInterface::class),
+                $this->app->make(StreamFactoryInterface::class),
+            );
         });
 
         // Register FEL Studio only in local or testing environments
@@ -82,7 +105,13 @@ final class FelServiceProvider extends ServiceProvider
         // Bridge PSR-14 events to Laravel's event system
         $laravelDispatcher = new \InfilePhp\Laravel\Events\LaravelEventDispatcher($dispatcher);
 
-        InfilePhp::configure($config, $laravelDispatcher);
+        InfilePhp::configure(
+            $config,
+            $this->app->make(ClientInterface::class),
+            $this->app->make(RequestFactoryInterface::class),
+            $this->app->make(StreamFactoryInterface::class),
+            $laravelDispatcher,
+        );
 
         if ($this->app->runningInConsole()) {
             $this->publishes([

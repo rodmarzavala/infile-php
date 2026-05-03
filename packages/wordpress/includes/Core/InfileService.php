@@ -42,7 +42,15 @@ class InfileService
             \InfilePhp\Core\Enums\Flow::from($flow)
         );
 
-        \InfilePhp\Core\InfilePhp::configure(self::$config);
+        $httpClient = new \InfilePhp\WordPress\Http\WpRemoteHttpClient();
+        $psr17Factory = new \InfilePhp\WordPress\Http\Psr7\WpPsr17Factory();
+
+        \InfilePhp\Core\InfilePhp::configure(
+            self::$config,
+            $httpClient,
+            $psr17Factory,
+            $psr17Factory
+        );
     }
 
     /**
