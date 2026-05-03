@@ -1,6 +1,6 @@
 {
   "name": "infile-php-docs",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Documentación oficial de infile-php",
   "private": true,
   "type": "module",

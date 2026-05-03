@@ -59,7 +59,9 @@ jobs:
           coverage: none
 
       - name: Install Dependencies
-        run: composer update --prefer-dist --no-progress
+        run: |
+          composer update --prefer-dist --no-progress
+          cd packages/core && composer update --prefer-dist --no-progress
 
       - name: PHPStan Level 9
         run: vendor/bin/phpstan analyse packages/core/src --level=9 --no-progress
@@ -83,7 +85,9 @@ jobs:
           coverage: none
 
       - name: Install Dependencies
-        run: composer update --prefer-dist --no-progress
+        run: |
+          composer update --prefer-dist --no-progress
+          cd packages/core && composer update --prefer-dist --no-progress
 
       - name: Run Pest Tests
         run: cd packages/core && vendor/bin/pest

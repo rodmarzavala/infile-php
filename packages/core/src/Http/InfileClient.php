@@ -7,7 +7,6 @@ namespace InfilePhp\Core\Http;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use InfilePhp\Core\Contracts\DteContract;
-use InfilePhp\Core\Dte\Item;
 use InfilePhp\Core\Dte\Recipient;
 use InfilePhp\Core\Enums\DteType;
 use InfilePhp\Core\Enums\Flow;

@@ -6,9 +6,6 @@ namespace InfilePhp\Laravel\Console;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
-use InfilePhp\Core\Dte\Invoice;
-use InfilePhp\Core\Dte\Item;
-use InfilePhp\Core\Dte\Recipient;
 
 /**
  * Artisan command: php artisan fel:retry-pending
