@@ -1,0 +1,20 @@
+{
+  "description": "Minimal valid standard invoice (FACT) for testing",
+  "type": "FACT",
+  "recipient": {
+    "nit": "12345678",
+    "name": "ACME Corporation S.A.",
+    "address": "5a Avenida 5-55 Zona 1, Guatemala City"
+  },
+  "items": [
+    {
+      "type": "product",
+      "description": "Widget Pro Model X",
+      "quantity": 2,
+      "unitPrice": 850.00,
+      "total": 1700.00
+    }
+  ],
+  "total": 1700.00,
+  "currency": "GTQ"
+}

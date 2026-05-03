@@ -1,0 +1,33 @@
+{
+    "name": "rodmarzavala/infile-php-monorepo",
+    "description": "Monorepo root for infile-php — Guatemala FEL SDK",
+    "type": "project",
+    "license": "MIT",
+    "require": {
+        "php": ">=8.2",
+        "symplify/monorepo-builder": "^11.2"
+    },
+    "require-dev": {
+        "phpstan/phpstan": "^1.10",
+        "friendsofphp/php-cs-fixer": "^3.40"
+    },
+    "repositories": [
+        {"type": "path", "url": "packages/core"},
+        {"type": "path", "url": "packages/laravel"},
+        {"type": "path", "url": "packages/symfony"},
+        {"type": "path", "url": "packages/wordpress"}
+    ],
+    "autoload": {
+        "psr-4": {
+            "InfilePhp\\Core\\": "packages/core/src/",
+            "InfilePhp\\Laravel\\": "packages/laravel/src/",
+            "InfilePhp\\Symfony\\": "packages/symfony/src/",
+            "InfilePhp\\Wordpress\\": "packages/wordpress/src/"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "config": {
+        "sort-packages": true
+    }
+}

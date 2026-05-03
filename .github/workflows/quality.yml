@@ -1,0 +1,35 @@
+name: CI Quality & Security
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  analyze:
+    name: Code Quality & Static Analysis
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, bcmath, soap, intl, gd, exif, iconv
+          coverage: none
+
+      - name: Install Dependencies
+        run: composer install --prefer-dist --no-progress
+
+      - name: PHP CS Fixer (Code Style)
+        run: vendor/bin/php-cs-fixer fix --dry-run --allow-risky=yes --diff
+
+      - name: PHPStan (Static Analysis Level 9)
+        run: vendor/bin/phpstan analyse packages/core/src --level=9 --no-progress
+
+      - name: Pest PHP (Unit & Feature Tests)
+        run: cd packages/core && vendor/bin/pest

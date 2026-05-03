@@ -1,0 +1,16 @@
+/vendor/
+/packages/*/vendor/
+/.php-cs-fixer.cache
+/.phpunit.result.cache
+/node_modules/
+docs/node_modules/
+docs/.vitepress/dist/
+docs/.vitepress/cache/
+.env
+.env.local
+*.log
+.DS_Store
+test.php
+Thumbs.db
+/build/
+/dist/

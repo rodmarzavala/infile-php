@@ -1,0 +1,21 @@
+{
+  "description": "Basic credit note (NCRE) referencing a previously issued FACT",
+  "type": "NCRE",
+  "sourceInvoiceUuid": "550e8400-e29b-41d4-a716-446655440000",
+  "reason": "Product returned by customer — item damaged on delivery",
+  "recipient": {
+    "nit": "12345678",
+    "name": "ACME Corporation S.A."
+  },
+  "items": [
+    {
+      "type": "product",
+      "description": "Widget Pro Model X (return)",
+      "quantity": 1,
+      "unitPrice": 850.00,
+      "total": 850.00
+    }
+  ],
+  "total": 850.00,
+  "currency": "GTQ"
+}

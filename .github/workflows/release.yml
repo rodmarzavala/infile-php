@@ -1,0 +1,41 @@
+name: Crear Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Crear Release en GitHub
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Extraer versión del tag
+        id: tag
+        run: echo "version=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+
+      - name: Extraer notas del CHANGELOG
+        id: changelog
+        run: |
+          VERSION="${{ steps.tag.outputs.version }}"
+          # Extrae la sección del CHANGELOG para esta versión
+          NOTES=$(awk "/^## \[${VERSION#v}\]/{flag=1; next} /^## \[/{flag=0} flag" CHANGELOG.md)
+          echo "notes<<EOF" >> $GITHUB_OUTPUT
+          echo "$NOTES" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Crear release en GitHub
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.tag.outputs.version }}
+          name: "infile-php ${{ steps.tag.outputs.version }}"
+          body: ${{ steps.changelog.outputs.notes }}
+          draft: false
+          prerelease: false

@@ -1,0 +1,20 @@
+{
+  "description": "Small taxpayer invoice (FPEQ) for a final consumer",
+  "type": "FPEQ",
+  "recipient": {
+    "nit": "CF",
+    "name": "Consumidor Final",
+    "address": "Ciudad"
+  },
+  "items": [
+    {
+      "type": "product",
+      "description": "Handmade Artisan Goods",
+      "quantity": 3,
+      "unitPrice": 75.00,
+      "total": 225.00
+    }
+  ],
+  "total": 225.00,
+  "currency": "GTQ"
+}

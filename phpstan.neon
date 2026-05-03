@@ -1,0 +1,15 @@
+parameters:
+    level: 9
+    paths:
+        - packages/core/src
+    scanDirectories:
+        - packages/core/vendor
+    excludePaths:
+        - packages/wordpress
+    checkMissingIterableValueType: true
+    checkGenericClassInNonGenericObjectType: true
+
+# Laravel and Symfony packages (packages/laravel, packages/symfony) must be analysed
+# within their own vendor context where framework dependencies are installed:
+#   cd packages/laravel && composer install && vendor/bin/phpstan analyse src --level=9
+#   cd packages/symfony && composer install && vendor/bin/phpstan analyse src --level=9

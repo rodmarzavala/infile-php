@@ -1,0 +1,30 @@
+{
+    "name": "rodmarzavala/infile-php-laravel",
+    "description": "Laravel adapter for infile-php — Guatemala FEL SDK",
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "php": ">=8.2",
+        "rodmarzavala/infile-php-core": "*",
+        "illuminate/support": "^10.0|^11.0",
+        "illuminate/console": "^10.0|^11.0",
+        "illuminate/database": "^10.0|^11.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "InfilePhp\\Laravel\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "InfilePhp\\Laravel\\FelServiceProvider"
+            ],
+            "aliases": {
+                "Fel": "InfilePhp\\Laravel\\Facades\\Fel"
+            }
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

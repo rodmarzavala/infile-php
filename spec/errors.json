@@ -1,0 +1,54 @@
+{
+  "errors": [
+    {
+      "code": "ERROR_401",
+      "description": "Credenciales de autenticación inválidas o no autorizadas",
+      "resolution": "Verify FEL_API_USER and FEL_API_KEY are correct and the account is active with Infile."
+    },
+    {
+      "code": "ERROR_403",
+      "description": "Acceso denegado: el usuario no tiene permisos para esta operación",
+      "resolution": "Contact Infile support to verify account permissions and flow authorization."
+    },
+    {
+      "code": "ERROR_429",
+      "description": "Límite diario de 2,000 transacciones alcanzado",
+      "resolution": "Wait until the daily reset (midnight Guatemala time) or request a limit increase from Infile."
+    },
+    {
+      "code": "ERROR_471",
+      "description": "NIT del receptor no existe en el RTU de SAT Guatemala",
+      "resolution": "Verify the recipient tax ID with Rtu::lookupNit() before issuing the DTE."
+    },
+    {
+      "code": "ERROR_472",
+      "description": "NIT del emisor no está habilitado para FEL",
+      "resolution": "Ensure your company NIT is registered and active in the FEL program with SAT Guatemala."
+    },
+    {
+      "code": "ERROR_501",
+      "description": "XML del DTE tiene formato inválido o no cumple con el esquema XSD de SAT",
+      "resolution": "Call $invoice->validate() before issue() to catch XSD errors without consuming a transaction."
+    },
+    {
+      "code": "ERROR_502",
+      "description": "La firma digital del DTE es inválida",
+      "resolution": "Verify FEL_SIGN_USER and FEL_SIGN_KEY. The signing token may have expired — request a new one from SAT."
+    },
+    {
+      "code": "ERROR_503",
+      "description": "DTE duplicado: ya existe un documento certificado con el mismo identificador",
+      "resolution": "This is the idempotency system working correctly. The original DTE UUID is returned. No action needed."
+    },
+    {
+      "code": "ERROR_601",
+      "description": "Error interno en el sistema de certificación de Infile",
+      "resolution": "Retry with exponential backoff. If the error persists, contact Infile support with the idempotency key."
+    },
+    {
+      "code": "ERROR_602",
+      "description": "El servicio de certificación de Infile no está disponible temporalmente",
+      "resolution": "The SDK will activate CAFE contingency mode automatically. DTEs will be retried when service is restored."
+    }
+  ]
+}

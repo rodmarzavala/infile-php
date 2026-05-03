@@ -1,0 +1,20 @@
+{
+  "description": "Standard invoice (FACT) for a final consumer — NIT = CF",
+  "type": "FACT",
+  "recipient": {
+    "nit": "CF",
+    "name": "Consumidor Final",
+    "address": "Ciudad"
+  },
+  "items": [
+    {
+      "type": "service",
+      "description": "Web Design Service",
+      "quantity": 1,
+      "unitPrice": 5000.00,
+      "total": 5000.00
+    }
+  ],
+  "total": 5000.00,
+  "currency": "GTQ"
+}
