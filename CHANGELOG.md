@@ -6,7 +6,7 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es/1.0.
 
 ---
 
-## [Sin publicar]
+## [1.0.4] - 2026-05-03
 
 ### Agregado
 - Paquete `core` con API fluida para emitir FACT, NCRE, NDEB y FPEQ

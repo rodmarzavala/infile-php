@@ -31,6 +31,16 @@ jobs:
           echo "$NOTES" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
 
+      - name: Build WordPress Plugin
+        run: |
+          cd packages/wordpress
+          composer config repositories.core '{"type": "path", "url": "../core", "options": {"symlink": false}}'
+          composer update --no-dev --optimize-autoloader --prefer-dist --no-progress
+          cd ../..
+          # Remove composer.json modifications and lock file to keep it clean if needed, 
+          # but we're in CI so it doesn't matter much.
+          zip -r infile-php-wordpress.zip packages/wordpress/ -x "packages/wordpress/.git/*" "packages/wordpress/tests/*" "packages/wordpress/composer.json" "packages/wordpress/composer.lock" "packages/wordpress/phpunit.xml" "packages/wordpress/vendor/bin/*"
+
       - name: Crear release en GitHub
         uses: softprops/action-gh-release@v2
         with:
@@ -39,3 +49,5 @@ jobs:
           body: ${{ steps.changelog.outputs.notes }}
           draft: false
           prerelease: false
+          files: |
+            infile-php-wordpress.zip

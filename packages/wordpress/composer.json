@@ -13,5 +13,13 @@
         }
     },
     "minimum-stability": "dev",
-    "prefer-stable": true
+    "prefer-stable": true,
+    "repositories": [{
+        "name": "core",
+        "type": "path",
+        "url": "../core",
+        "options": {
+            "symlink": false
+        }
+    }]
 }
