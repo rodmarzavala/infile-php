@@ -33,13 +33,12 @@ jobs:
 
       - name: Build WordPress Plugin
         run: |
-          cd packages/wordpress
-          composer config repositories.core '{"type": "path", "url": "../core", "options": {"symlink": false}}'
+          cp -r packages/wordpress infile-php-wordpress
+          cd infile-php-wordpress
+          composer config repositories.core '{"type": "path", "url": "../packages/core", "options": {"symlink": false}}'
           composer update --no-dev --optimize-autoloader --prefer-dist --no-progress
-          cd ../..
-          # Remove composer.json modifications and lock file to keep it clean if needed, 
-          # but we're in CI so it doesn't matter much.
-          zip -r infile-php-wordpress.zip packages/wordpress/ -x "packages/wordpress/.git/*" "packages/wordpress/tests/*" "packages/wordpress/composer.json" "packages/wordpress/composer.lock" "packages/wordpress/phpunit.xml" "packages/wordpress/vendor/bin/*"
+          cd ..
+          zip -r infile-php-wordpress.zip infile-php-wordpress/ -x "infile-php-wordpress/.git/*" "infile-php-wordpress/tests/*" "infile-php-wordpress/composer.json" "infile-php-wordpress/composer.lock" "infile-php-wordpress/phpunit.xml" "infile-php-wordpress/vendor/bin/*"
 
       - name: Crear release en GitHub
         uses: softprops/action-gh-release@v2
