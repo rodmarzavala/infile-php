@@ -23,7 +23,7 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require-dev": {
-        "pestphp/pest": "^4.6"
+        "pestphp/pest": "^3.0"
     },
     "config": {
         "allow-plugins": {
