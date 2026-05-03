@@ -1,0 +1,39 @@
+name: Split Monorepo
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - '*'
+
+jobs:
+  packages_split:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      fail-fast: false
+      matrix:
+        package:
+          - local_path: 'packages/core'
+            split_repository: 'infile-php-core'
+          - local_path: 'packages/laravel'
+            split_repository: 'infile-php-laravel'
+          - local_path: 'packages/symfony'
+            split_repository: 'infile-php-symfony'
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Monorepo Split of ${{ matrix.package.local_path }}
+        uses: symplify/monorepo-split-github-action@2.3.0
+        with:
+          tag: ${{ github.ref_name }}
+          package_directory: '${{ matrix.package.local_path }}'
+          repository_organization: 'rodmarzavala'
+          repository_name: '${{ matrix.package.split_repository }}'
+          user_name: "GitHub Action"
+          user_email: "action@github.com"
+          branch: "main"
+        env:
+          GITHUB_TOKEN: ${{ secrets.SPLIT_TOKEN }}
