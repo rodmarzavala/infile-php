@@ -9,7 +9,7 @@ use InfilePhp\Core\Dte\Invoice;
 use InfilePhp\Core\Dte\Item;
 use InfilePhp\Core\Dte\Recipient;
 
-$respuesta = Invoice::create()
+$response = Invoice::create()
     ->for(
         Recipient::withTaxId('12345678')
             ->name('ACME Corporation S.A.')
@@ -20,10 +20,10 @@ $respuesta = Invoice::create()
     ->issue();
 
 // Datos del DTE certificado
-echo $respuesta->uuid();             // ej: 550e8400-e29b-41d4-a716-446655440000
-echo $respuesta->serie();            // ej: A
-echo $respuesta->numero();           // ej: 1234
-echo $respuesta->remainingCredits(); // créditos API restantes hoy
+echo $response->uuid();             // ej: 550e8400-e29b-41d4-a716-446655440000
+echo $response->serie();            // ej: A
+echo $response->numero();           // ej: 1234
+echo $response->remainingCredits(); // créditos API restantes hoy
 ```
 
 ## Factura a consumidor final (sin NIT)
@@ -145,7 +145,7 @@ use InfilePhp\Core\Exceptions\InfileCertificationException;
 use InfilePhp\Core\Exceptions\InfileServiceUnavailableException;
 
 try {
-    $respuesta = Invoice::create()
+    $response = Invoice::create()
         ->for(Recipient::withTaxId('12345678')->name('Cliente')->address('GT'))
         ->add(Item::service('Servicio')->unitPrice(1_000.00))
         ->issue();

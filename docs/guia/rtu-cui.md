@@ -28,7 +28,7 @@ try {
         ], 422);
     }
 
-    $respuesta = Invoice::create()
+    $response = Invoice::create()
         ->for(
             Recipient::withTaxId($nit)
                 ->name($contribuyente->name)

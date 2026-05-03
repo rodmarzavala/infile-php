@@ -52,7 +52,7 @@ class FacturaController extends AbstractController
     {
         $data = $request->toArray();
 
-        $respuesta = Invoice::create()
+        $response = Invoice::create()
             ->for(
                 Recipient::withTaxId($data['nit'])
                     ->name($data['nombre'])
@@ -62,9 +62,9 @@ class FacturaController extends AbstractController
             ->issue();
 
         return $this->json([
-            'uuid'   => $respuesta->uuid(),
-            'serie'  => $respuesta->serie(),
-            'numero' => $respuesta->numero(),
+            'uuid'   => $response->uuid(),
+            'serie'  => $response->serie(),
+            'numero' => $response->numero(),
         ]);
     }
 }

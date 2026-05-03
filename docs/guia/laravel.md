@@ -48,7 +48,7 @@ class FacturaController extends Controller
             'items'     => 'required|array|min:1',
         ]);
 
-        $respuesta = Invoice::create()
+        $response = Invoice::create()
             ->for(
                 Recipient::withTaxId($request->nit)
                     ->name($request->nombre)
@@ -61,9 +61,9 @@ class FacturaController extends Controller
             ->issue();
 
         return response()->json([
-            'uuid'   => $respuesta->uuid(),
-            'serie'  => $respuesta->serie(),
-            'numero' => $respuesta->numero(),
+            'uuid'   => $response->uuid(),
+            'serie'  => $response->serie(),
+            'numero' => $response->numero(),
         ]);
     }
 }
@@ -74,7 +74,7 @@ class FacturaController extends Controller
 ```php
 use InfilePhp\Laravel\Facades\Fel;
 
-$respuesta = Fel::certify($dte);
+$response = Fel::certify($dte);
 ```
 
 ## Comandos Artisan
