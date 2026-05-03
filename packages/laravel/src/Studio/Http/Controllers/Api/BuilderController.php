@@ -9,7 +9,6 @@ use Illuminate\Http\Request;
 use InfilePhp\Core\Dte\Invoice;
 use InfilePhp\Core\Dte\Item;
 use InfilePhp\Core\Dte\Recipient;
-use InfilePhp\Core\Facades\Fel;
 use InfilePhp\Core\InfilePhp;
 
 final class BuilderController
@@ -36,7 +35,7 @@ final class BuilderController
     {
         try {
             $dte = $this->buildDteFromRequest($request);
-            
+
             // Core structure validation (throws if missing recipient/items)
             $dte->validate();
 
@@ -61,7 +60,7 @@ final class BuilderController
         $invoice = Invoice::create();
 
         $recipientData = $request->input('recipient', []);
-        
+
         if (($recipientData['tax_id'] ?? '') === 'CF') {
             $invoice->forFinalConsumer();
         } elseif (!empty($recipientData)) {

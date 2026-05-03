@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace InfilePhp\Laravel\Studio;
 
-use Illuminate\Support\ServiceProvider;
+use Illuminate\Events\Dispatcher;
 use Illuminate\Support\Facades\Route;
-use InfilePhp\Laravel\Studio\Http\Controllers\StudioController;
+use Illuminate\Support\ServiceProvider;
 use InfilePhp\Laravel\Studio\Http\Controllers\Api\TimelineController;
+use InfilePhp\Laravel\Studio\Http\Controllers\StudioController;
 use InfilePhp\Laravel\Studio\Listeners\StudioEventSubscriber;
 use InfilePhp\Laravel\Studio\Storage\StudioRepository;
-use Illuminate\Events\Dispatcher;
 
 final class StudioServiceProvider extends ServiceProvider
 {

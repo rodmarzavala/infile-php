@@ -25,7 +25,7 @@ final class StudioRepository
             $dbPath = $storagePath . '/fel-studio.sqlite';
             $isNew = !File::exists($dbPath);
         }
-        
+
         $this->db = new PDO('sqlite:' . $dbPath);
         $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
@@ -89,17 +89,17 @@ final class StudioRepository
     {
         $stmt = $this->db->query("SELECT * FROM timeline ORDER BY created_at DESC LIMIT 100");
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        
+
         // Decode JSON payloads
         foreach ($results as &$row) {
             if (isset($row['payload'])) {
                 $row['payload'] = json_decode((string) $row['payload'], true);
             }
         }
-        
+
         return $results;
     }
-    
+
     public function clear(): void
     {
         $this->db->exec("DELETE FROM timeline");

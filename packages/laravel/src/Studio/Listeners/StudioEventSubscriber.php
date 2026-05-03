@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace InfilePhp\Laravel\Studio\Listeners;
 
 use Illuminate\Events\Dispatcher;
-use InfilePhp\Core\Events\DteIssued;
-use InfilePhp\Core\Events\DteFailed;
 use InfilePhp\Core\Events\DteCancelled;
+use InfilePhp\Core\Events\DteFailed;
+use InfilePhp\Core\Events\DteIssued;
 use InfilePhp\Laravel\Studio\Storage\StudioRepository;
 
 final readonly class StudioEventSubscriber
@@ -29,7 +29,7 @@ final readonly class StudioEventSubscriber
             'status' => 'issued',
             'payload' => [
                 'event' => 'DteIssued',
-            ]
+            ],
         ]);
     }
 
@@ -47,10 +47,10 @@ final readonly class StudioEventSubscriber
             'payload' => [
                 'event' => 'DteFailed',
                 'exception_class' => get_class($event->exception),
-            ]
+            ],
         ]);
     }
-    
+
     public function handleDteCancelled(DteCancelled $event): void
     {
         $this->repository->logTransaction([
@@ -64,7 +64,7 @@ final readonly class StudioEventSubscriber
             'payload' => [
                 'event' => 'DteCancelled',
                 'reason' => $event->reason,
-            ]
+            ],
         ]);
     }
 
@@ -79,7 +79,7 @@ final readonly class StudioEventSubscriber
             DteFailed::class,
             [self::class, 'handleDteFailed']
         );
-        
+
         $events->listen(
             DteCancelled::class,
             [self::class, 'handleDteCancelled']
