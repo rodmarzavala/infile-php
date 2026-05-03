@@ -37,8 +37,21 @@ jobs:
           cd infile-php-wordpress
           composer config repositories.core '{"type": "path", "url": "../packages/core", "options": {"symlink": false}}'
           composer update --no-dev --optimize-autoloader --prefer-dist --no-progress
+          
+          # Clean up unnecessary dev and meta files from vendor directories
+          find . -name "tests" -type d -exec rm -rf {} +
+          find . -name "Tests" -type d -exec rm -rf {} +
+          find . -name "composer.json" -type f -delete
+          find . -name "composer.lock" -type f -delete
+          find . -name "phpunit.xml" -type f -delete
+          find . -name "CHANGELOG.md" -type f -delete
+          find . -name "README.md" -type f -delete
+          find . -name "UPGRADING.md" -type f -delete
+          find . -name ".gitignore" -type f -delete
+          rm -rf vendor/bin
+          
           cd ..
-          zip -r infile-php-wordpress.zip infile-php-wordpress/ -x "infile-php-wordpress/.git/*" "infile-php-wordpress/tests/*" "infile-php-wordpress/composer.json" "infile-php-wordpress/composer.lock" "infile-php-wordpress/phpunit.xml" "infile-php-wordpress/vendor/bin/*"
+          zip -r infile-php-wordpress.zip infile-php-wordpress/
 
       - name: Crear release en GitHub
         uses: softprops/action-gh-release@v2
