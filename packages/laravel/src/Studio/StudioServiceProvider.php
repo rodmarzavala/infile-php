@@ -47,6 +47,7 @@ final class StudioServiceProvider extends ServiceProvider
                     ->withoutMiddleware([\Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class])
                     ->group(function () {
                     Route::get('timeline', [TimelineController::class, 'index']);
+                    Route::get('health', [\InfilePhp\Laravel\Studio\Http\Controllers\Api\HealthController::class, 'index']);
                     Route::post('builder/preview', [\InfilePhp\Laravel\Studio\Http\Controllers\Api\BuilderController::class, 'preview']);
                     Route::post('builder/validate', [\InfilePhp\Laravel\Studio\Http\Controllers\Api\BuilderController::class, 'validate']);
                 });

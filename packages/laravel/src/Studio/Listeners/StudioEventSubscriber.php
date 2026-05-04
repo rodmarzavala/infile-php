@@ -29,6 +29,7 @@ final readonly class StudioEventSubscriber
             'status' => 'issued',
             'payload' => [
                 'event' => 'DteIssued',
+                'xml_certified' => $event->xmlCertified,
             ],
         ]);
     }

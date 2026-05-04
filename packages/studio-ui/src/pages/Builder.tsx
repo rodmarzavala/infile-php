@@ -1,5 +1,6 @@
-import { useState } from 'react';
-import { Play, CheckCircle, AlertCircle, Plus, Trash2 } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Play, CheckCircle, AlertCircle, Plus, Trash2, Code2, FileCode2 } from 'lucide-react';
+import { translateInfileError } from '../utils/ErrorTranslator';
 
 export default function Builder() {
   const [recipient, setRecipient] = useState({
@@ -13,11 +14,29 @@ export default function Builder() {
   ]);
 
   const [xmlResult, setXmlResult] = useState('');
-  const [status, setStatus] = useState<{ type: 'idle' | 'success' | 'error'; message: string }>({
+  const [status, setStatus] = useState<{ type: 'idle' | 'success' | 'error'; message: string; translation?: string | null }>({
     type: 'idle',
     message: '',
   });
   const [loading, setLoading] = useState(false);
+  const [activeTab, setActiveTab] = useState<'xml' | 'php'>('xml');
+
+  useEffect(() => {
+    const replayRaw = localStorage.getItem('fel_studio_replay_tx');
+    if (replayRaw) {
+      try {
+        const replayTx = JSON.parse(replayRaw);
+        if (replayTx.recipientTaxId) {
+          setRecipient(prev => ({ ...prev, tax_id: replayTx.recipientTaxId }));
+        }
+        // clear it so it doesn't trigger again
+        localStorage.removeItem('fel_studio_replay_tx');
+        setStatus({ type: 'error', message: 'Datos recuperados de la transacción fallida. Por favor corrige y vuelve a intentar.' });
+      } catch (e) {
+        // ignore
+      }
+    }
+  }, []);
 
   const addItem = () => {
     setItems([...items, { type: 'B', description: '', quantity: 1, unit_price: 0 }]);
@@ -41,6 +60,25 @@ export default function Builder() {
       unit_price: Number(item.unit_price),
     })),
   });
+
+  const generatePhpCode = () => {
+    let code = `use InfilePhp\\Core\\Dtes\\Invoice;\nuse InfilePhp\\Core\\Entities\\Recipient;\nuse InfilePhp\\Core\\Entities\\Item;\n\n`;
+    code += `$invoice = Invoice::create()\n`;
+    
+    if (recipient.tax_id.toUpperCase() === 'CF') {
+        code += `    ->forFinalConsumer()\n`;
+    } else {
+        code += `    ->for(\n        Recipient::withTaxId('${recipient.tax_id}')\n            ->name('${recipient.name}')\n            ->address('${recipient.address}')\n    )\n`;
+    }
+    
+    items.forEach(item => {
+        const typeStr = item.type === 'B' ? 'product' : 'service';
+        code += `    ->add(Item::${typeStr}('${item.description}')->quantity(${item.quantity})->unitPrice(${item.unit_price}))\n`;
+    });
+    
+    code += `    ->issue();\n`;
+    return code;
+  };
 
   const handlePreview = async () => {
     setLoading(true);
@@ -69,11 +107,12 @@ export default function Builder() {
         };
         setXmlResult(formatXml(data.xml));
         setStatus({ type: 'success', message: 'Preview generated successfully.' });
+        setActiveTab('xml');
       } else {
-        setStatus({ type: 'error', message: data.error || 'Unknown error' });
+        setStatus({ type: 'error', message: data.error || 'Unknown error', translation: translateInfileError(data.error) });
       }
     } catch (err: any) {
-      setStatus({ type: 'error', message: err.message });
+      setStatus({ type: 'error', message: err.message, translation: translateInfileError(err.message) });
     } finally {
       setLoading(false);
     }
@@ -95,10 +134,10 @@ export default function Builder() {
       if (data.success) {
         setStatus({ type: 'success', message: data.message || 'Validation passed!' });
       } else {
-        setStatus({ type: 'error', message: data.error || 'Validation failed' });
+        setStatus({ type: 'error', message: data.error || 'Validation failed', translation: translateInfileError(data.error) });
       }
     } catch (err: any) {
-      setStatus({ type: 'error', message: err.message });
+      setStatus({ type: 'error', message: err.message, translation: translateInfileError(err.message) });
     } finally {
       setLoading(false);
     }
@@ -139,7 +178,14 @@ export default function Builder() {
           ) : (
             <AlertCircle className="w-5 h-5 shrink-0" />
           )}
-          <p className="text-sm font-medium">{status.message}</p>
+          <div>
+            <p className="text-sm font-medium">{status.message}</p>
+            {status.translation && (
+              <div className="mt-2 text-sm bg-white bg-opacity-50 p-2 rounded border border-red-100">
+                <span className="font-semibold">Sugerencia:</span> {status.translation}
+              </div>
+            )}
+          </div>
         </div>
       )}
 
@@ -265,16 +311,42 @@ export default function Builder() {
           </div>
         </div>
 
-        {/* XML Result */}
-        <div className="bg-slate-900 rounded-xl shadow-sm overflow-hidden flex flex-col h-[600px] lg:h-auto">
-          <div className="px-4 py-3 bg-slate-800 border-b border-slate-700 flex items-center justify-between">
-            <h3 className="text-sm font-medium text-slate-200 font-mono">Output XML</h3>
+        {/* Results Panel */}
+        <div className="bg-slate-900 rounded-xl shadow-sm overflow-hidden flex flex-col h-[600px] lg:h-auto border border-slate-800">
+          <div className="flex items-center bg-slate-800 border-b border-slate-700">
+            <button
+              onClick={() => setActiveTab('xml')}
+              className={`flex items-center gap-2 px-4 py-3 text-sm font-medium transition-colors ${
+                activeTab === 'xml' 
+                  ? 'text-indigo-400 border-b-2 border-indigo-400 bg-slate-800/50' 
+                  : 'text-slate-400 hover:text-slate-200'
+              }`}
+            >
+              <FileCode2 className="w-4 h-4" />
+              Output XML
+            </button>
+            <button
+              onClick={() => setActiveTab('php')}
+              className={`flex items-center gap-2 px-4 py-3 text-sm font-medium transition-colors ${
+                activeTab === 'php' 
+                  ? 'text-indigo-400 border-b-2 border-indigo-400 bg-slate-800/50' 
+                  : 'text-slate-400 hover:text-slate-200'
+              }`}
+            >
+              <Code2 className="w-4 h-4" />
+              Código PHP
+            </button>
           </div>
+          
           <div className="p-4 overflow-auto flex-1 text-slate-300 text-sm font-mono whitespace-pre text-left">
-            {xmlResult || (
-              <div className="flex h-full items-center justify-center text-slate-600 italic">
-                Click "Preview XML" to generate the document
-              </div>
+            {activeTab === 'xml' ? (
+              xmlResult || (
+                <div className="flex h-full items-center justify-center text-slate-600 italic">
+                  Haz clic en "Preview XML" para generar el documento
+                </div>
+              )
+            ) : (
+              generatePhpCode()
             )}
           </div>
         </div>

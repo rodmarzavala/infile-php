@@ -1,5 +1,5 @@
-import { Outlet, NavLink } from 'react-router-dom';
-import { Activity, Clock, FileText, Settings, Database } from 'lucide-react';
+import { Outlet, NavLink, Link } from 'react-router-dom';
+import { Activity, Clock, FileText, Database } from 'lucide-react';
 
 export default function Layout() {
   const navItems = [
@@ -14,9 +14,9 @@ export default function Layout() {
       {/* Sidebar */}
       <div className="w-64 bg-slate-900 text-slate-50 flex flex-col">
         <div className="p-6">
-          <h1 className="text-2xl font-bold tracking-tight text-white flex items-center gap-2">
+          <Link to="/" className="text-2xl font-bold tracking-tight text-white flex items-center gap-2 hover:opacity-80 transition-opacity">
             <span className="text-blue-500">FEL</span> Studio
-          </h1>
+          </Link>
           <p className="text-slate-400 text-xs mt-1">Local Development UI</p>
         </div>
         
@@ -38,15 +38,7 @@ export default function Layout() {
             </NavLink>
           ))}
         </nav>
-        
-        <div className="p-4 border-t border-slate-800">
-          <button className="flex items-center gap-3 px-3 py-2 text-slate-400 hover:text-white w-full rounded-lg transition-colors">
-            <Settings className="w-5 h-5" />
-            <span className="font-medium">Settings</span>
-          </button>
-        </div>
       </div>
-
       {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-hidden">
         <header className="h-16 border-b border-slate-200 bg-white flex items-center px-8 shadow-sm z-10">

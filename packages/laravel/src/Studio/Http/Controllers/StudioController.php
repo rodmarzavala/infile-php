@@ -19,6 +19,10 @@ final class StudioController extends Controller
 
         $html = File::get($indexPath);
 
-        return response($html)->header('Content-Type', 'text/html');
+        return response($html)
+            ->header('Content-Type', 'text/html')
+            ->header('Cache-Control', 'no-cache, no-store, must-revalidate')
+            ->header('Pragma', 'no-cache')
+            ->header('Expires', '0');
     }
 }
