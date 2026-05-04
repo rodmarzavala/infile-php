@@ -23,6 +23,7 @@ SDK PHP para el sistema de **Factura Electrónica en Línea (FEL)** de Guatemala
 - [Laravel](#laravel)
 - [Symfony](#symfony)
 - [WordPress / WooCommerce](#wordpress--woocommerce)
+- [FEL Studio](#fel-studio)
 - [Pruebas con FelFake](#pruebas-con-felfake)
 - [Consultas RTU y CUI](#consultas-rtu-y-cui)
 - [Notas y créditos](#notas--crédito)
@@ -66,6 +67,11 @@ FEL_API_KEY=llave_api_infile
 FEL_EMAIL_COPY=contabilidad@empresa.com
 ```
 
+Para publicar los assets (necesario para FEL Studio):
+```bash
+php artisan vendor:publish --tag=fel-studio-assets
+```
+
 ### Symfony
 
 ```bash
@@ -76,6 +82,13 @@ Registra el bundle en `config/bundles.php`:
 
 ```php
 InfilePhp\Symfony\InfilePhpBundle::class => ['all' => true],
+```
+
+Importa las rutas del bundle en `config/routes.yaml` (o `config/routes/infile_php.yaml`):
+
+```yaml
+infile_php_routes:
+    resource: '@InfilePhpBundle/Resources/config/routes.yaml'
 ```
 
 Crea `config/packages/infile_php.yaml`:
@@ -90,6 +103,16 @@ infile_php:
         sign_key:  '%env(FEL_SIGN_KEY)%'
         api_user:  '%env(FEL_API_USER)%'
         api_key:   '%env(FEL_API_KEY)%'
+```
+
+Publica los assets del bundle (necesario para FEL Studio):
+```bash
+php bin/console assets:install public
+```
+
+Para ver la **barra de depuración (Debug Bar)** de FEL en tu entorno local, asegúrate de tener instalado el Profiler de Symfony:
+```bash
+composer require --dev symfony/profiler-pack
 ```
 
 ### WordPress / WooCommerce
@@ -271,6 +294,24 @@ $check = new InfileHealthCheck();
 $check->isHealthy();      // bool
 $check->responseTimeMs(); // int|null
 ```
+
+---
+
+## FEL Studio
+
+FEL Studio es una interfaz gráfica de desarrollo local (UI web) que te permite inspeccionar transacciones DTE, simular facturas, y reintentar envíos directamente desde el navegador, sin usar Postman.
+
+### Acceso
+- **Laravel**: Entra a `http://localhost:8000/fel-studio`
+- **Symfony**: Entra a `http://localhost:8000/fel-studio` (asegúrate de haber ejecutado `assets:install`)
+
+### Seguridad en Producción
+Por defecto, FEL Studio está bloqueado en producción.
+- **Laravel**: Implementa el Gate `viewFelStudio` en tu `AuthServiceProvider` para controlar quién puede acceder.
+- **Symfony**: FEL Studio exige automáticamente el rol `ROLE_FEL_STUDIO` a través del componente Security de Symfony si no estás en el entorno `dev`.
+
+### Almacenamiento
+El historial local de facturas se guarda por defecto en una base de datos SQLite embebida o archivo plano (JSON fallback). En Laravel, puedes configurar para usar la base de datos de tu proyecto si lo prefieres publicando la configuración.
 
 ---
 
