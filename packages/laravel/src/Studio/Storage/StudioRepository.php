@@ -88,7 +88,7 @@ final class StudioRepository
     public function getTimeline(): array
     {
         $stmt = $this->db->query("SELECT * FROM timeline ORDER BY created_at DESC LIMIT 100");
-        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $results = $stmt !== false ? $stmt->fetchAll(PDO::FETCH_ASSOC) : [];
 
         // Decode JSON payloads
         foreach ($results as &$row) {

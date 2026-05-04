@@ -59,22 +59,32 @@ final class BuilderController
         // For now, Studio builder only supports FACT (Invoice)
         $invoice = Invoice::create();
 
-        $recipientData = $request->input('recipient', []);
+        $recipientInput = $request->input('recipient', []);
+        $recipientData = is_array($recipientInput) ? $recipientInput : [];
 
-        if (($recipientData['tax_id'] ?? '') === 'CF') {
+        if (isset($recipientData['tax_id']) && $recipientData['tax_id'] === 'CF') {
             $invoice->forFinalConsumer();
         } elseif (!empty($recipientData)) {
+            $taxId = is_string($recipientData['tax_id'] ?? null) ? $recipientData['tax_id'] : '';
+            $name = is_string($recipientData['name'] ?? null) ? $recipientData['name'] : 'Ciudadano';
+            $address = is_string($recipientData['address'] ?? null) ? $recipientData['address'] : 'Ciudad';
+
             $invoice->for(
-                Recipient::withTaxId($recipientData['tax_id'] ?? '')
-                    ->name($recipientData['name'] ?? 'Ciudadano')
-                    ->address($recipientData['address'] ?? 'Ciudad')
+                Recipient::withTaxId($taxId)
+                    ->name($name)
+                    ->address($address)
             );
         }
 
-        $items = $request->input('items', []);
+        $itemsInput = $request->input('items', []);
+        $items = is_array($itemsInput) ? $itemsInput : [];
         foreach ($items as $itemData) {
-            $type = $itemData['type'] ?? 'B'; // Bien by default
-            $description = $itemData['description'] ?? 'Item';
+            if (!is_array($itemData)) {
+                continue;
+            }
+
+            $type = is_string($itemData['type'] ?? null) ? $itemData['type'] : 'B';
+            $description = is_string($itemData['description'] ?? null) ? $itemData['description'] : 'Item';
             $quantity = (float) ($itemData['quantity'] ?? 1);
             $unitPrice = (float) ($itemData['unit_price'] ?? 0.0);
 

@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\File;
 
 final class StudioController extends Controller
 {
-    public function index()
+    public function index(): \Illuminate\Http\Response
     {
         $indexPath = public_path('vendor/fel-studio/index.html');
 

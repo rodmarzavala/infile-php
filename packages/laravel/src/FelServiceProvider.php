@@ -45,23 +45,23 @@ final class FelServiceProvider extends ServiceProvider
             $fallback = $cfg['fallback'] ?? ['enabled' => true];
 
             return new FelConfig(
-                nit: (string) ($cfg['nit'] ?? ''),
-                signUser: (string) ($credentials['sign_user'] ?? ''),
-                signKey: (string) ($credentials['sign_key'] ?? ''),
-                apiUser: (string) ($credentials['api_user'] ?? ''),
-                apiKey: (string) ($credentials['api_key'] ?? ''),
-                environment: Environment::from((string) ($cfg['environment'] ?? 'sandbox')),
-                flow: Flow::from((string) ($cfg['flow'] ?? 'unified')),
-                retryTimes: (int) ($retry['times'] ?? 3),
-                retrySleep: (int) ($retry['sleep'] ?? 2),
+                nit: is_string($cfg['nit'] ?? null) ? $cfg['nit'] : '',
+                signUser: is_string($credentials['sign_user'] ?? null) ? $credentials['sign_user'] : '',
+                signKey: is_string($credentials['sign_key'] ?? null) ? $credentials['sign_key'] : '',
+                apiUser: is_string($credentials['api_user'] ?? null) ? $credentials['api_user'] : '',
+                apiKey: is_string($credentials['api_key'] ?? null) ? $credentials['api_key'] : '',
+                environment: Environment::from(is_string($cfg['environment'] ?? null) ? $cfg['environment'] : 'sandbox'),
+                flow: Flow::from(is_string($cfg['flow'] ?? null) ? $cfg['flow'] : 'unified'),
+                retryTimes: (int) (is_numeric($retry['times'] ?? null) ? $retry['times'] : 3),
+                retrySleep: (int) (is_numeric($retry['sleep'] ?? null) ? $retry['sleep'] : 2),
                 fallbackEnabled: (bool) ($fallback['enabled'] ?? true),
-                endpointSign: (string) ($endpoints['sign'] ?? ''),
-                endpointCertify: (string) ($endpoints['certify'] ?? ''),
-                endpointCancel: (string) ($endpoints['cancel'] ?? ''),
-                endpointUnified: (string) ($endpoints['unified'] ?? ''),
-                endpointNit: (string) ($endpoints['nit'] ?? ''),
-                endpointCui: (string) ($endpoints['cui'] ?? ''),
-                endpointCuiAuth: (string) ($endpoints['cui_auth'] ?? ''),
+                endpointSign: is_string($endpoints['sign'] ?? null) ? $endpoints['sign'] : '',
+                endpointCertify: is_string($endpoints['certify'] ?? null) ? $endpoints['certify'] : '',
+                endpointCancel: is_string($endpoints['cancel'] ?? null) ? $endpoints['cancel'] : '',
+                endpointUnified: is_string($endpoints['unified'] ?? null) ? $endpoints['unified'] : '',
+                endpointNit: is_string($endpoints['nit'] ?? null) ? $endpoints['nit'] : '',
+                endpointCui: is_string($endpoints['cui'] ?? null) ? $endpoints['cui'] : '',
+                endpointCuiAuth: is_string($endpoints['cui_auth'] ?? null) ? $endpoints['cui_auth'] : '',
             );
         });
 
@@ -90,7 +90,9 @@ final class FelServiceProvider extends ServiceProvider
         });
 
         // Register FEL Studio only in local or testing environments
-        if ($this->app->isLocal() || $this->app->runningUnitTests()) {
+        /** @var \Illuminate\Foundation\Application $app */
+        $app = $this->app;
+        if ($app->isLocal() || $app->runningUnitTests()) {
             $this->app->register(\InfilePhp\Laravel\Studio\StudioServiceProvider::class);
         }
     }
@@ -113,7 +115,10 @@ final class FelServiceProvider extends ServiceProvider
             $laravelDispatcher,
         );
 
-        if ($this->app->runningInConsole()) {
+        /** @var \Illuminate\Foundation\Application $app */
+        $app = $this->app;
+
+        if ($app->runningInConsole()) {
             $this->publishes([
                 __DIR__ . '/../config/felkit.php' => config_path('felkit.php'),
             ], 'felkit-config');

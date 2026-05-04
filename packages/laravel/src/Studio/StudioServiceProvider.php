@@ -16,7 +16,10 @@ final class StudioServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
-        if (!$this->app->isLocal() && !$this->app->runningUnitTests()) {
+        /** @var \Illuminate\Foundation\Application $app */
+        $app = $this->app;
+
+        if (!$app->isLocal() && !$app->runningUnitTests()) {
             return;
         }
 
@@ -25,7 +28,10 @@ final class StudioServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        if (!$this->app->isLocal() && !$this->app->runningUnitTests()) {
+        /** @var \Illuminate\Foundation\Application $app */
+        $app = $this->app;
+
+        if (!$app->isLocal() && !$app->runningUnitTests()) {
             return;
         }
 
@@ -49,8 +55,11 @@ final class StudioServiceProvider extends ServiceProvider
                     ->name('fel-studio.index');
             });
 
+        /** @var \Illuminate\Foundation\Application $app */
+        $app = $this->app;
+
         // Publish UI assets from the agnostic frontend
-        if ($this->app->runningInConsole()) {
+        if ($app->runningInConsole()) {
             $this->publishes([
                 __DIR__ . '/../../resources/studio-ui' => public_path('vendor/fel-studio'),
             ], 'fel-studio-assets');

@@ -43,10 +43,10 @@ final readonly class StudioEventSubscriber
             'recipient_tax_id' => null,
             'idempotency_key' => $event->idempotencyKey,
             'status' => 'failed',
-            'error_message' => $event->exception->getMessage(),
+            'error_message' => $event->errorMessage,
             'payload' => [
                 'event' => 'DteFailed',
-                'exception_class' => get_class($event->exception),
+                'exception_class' => $event->previous ? get_class($event->previous) : null,
             ],
         ]);
     }
