@@ -43,7 +43,9 @@ final class StudioServiceProvider extends ServiceProvider
             ->prefix('fel-studio')
             ->group(function () {
                 // API Routes
-                Route::prefix('api')->group(function () {
+                Route::prefix('api')
+                    ->withoutMiddleware([\Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class])
+                    ->group(function () {
                     Route::get('timeline', [TimelineController::class, 'index']);
                     Route::post('builder/preview', [\InfilePhp\Laravel\Studio\Http\Controllers\Api\BuilderController::class, 'preview']);
                     Route::post('builder/validate', [\InfilePhp\Laravel\Studio\Http\Controllers\Api\BuilderController::class, 'validate']);
@@ -61,7 +63,7 @@ final class StudioServiceProvider extends ServiceProvider
         // Publish UI assets from the agnostic frontend
         if ($app->runningInConsole()) {
             $this->publishes([
-                __DIR__ . '/../../resources/studio-ui' => public_path('vendor/fel-studio'),
+                __DIR__ . '/../../resources/studio-ui' => public_path('fel-studio'),
             ], 'fel-studio-assets');
         }
     }
