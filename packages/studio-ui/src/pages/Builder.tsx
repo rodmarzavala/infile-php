@@ -56,7 +56,18 @@ export default function Builder() {
       const data = await response.json();
       
       if (data.success) {
-        setXmlResult(data.xml);
+        // Pretty print XML
+        const formatXml = (xml: string) => {
+          let formatted = '';
+          let pad = 0;
+          xml.split(/(?=[<])/).forEach(node => {
+            if (node.match(/^<\/\w/)) pad -= 1;
+            formatted += '  '.repeat(Math.max(0, pad)) + node + '\n';
+            if (node.match(/^<\w[^>]*[^\/]>.*$/)) pad += 1;
+          });
+          return formatted;
+        };
+        setXmlResult(formatXml(data.xml));
         setStatus({ type: 'success', message: 'Preview generated successfully.' });
       } else {
         setStatus({ type: 'error', message: data.error || 'Unknown error' });

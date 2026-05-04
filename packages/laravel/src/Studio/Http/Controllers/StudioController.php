@@ -11,7 +11,7 @@ final class StudioController extends Controller
 {
     public function index(): \Illuminate\Http\Response
     {
-        $indexPath = public_path('fel-studio/studio.html');
+        $indexPath = public_path('vendor/fel-studio/index.html');
 
         if (!File::exists($indexPath)) {
             return response('FEL Studio assets not found. Run `php artisan vendor:publish --tag=fel-studio-assets`', 404);

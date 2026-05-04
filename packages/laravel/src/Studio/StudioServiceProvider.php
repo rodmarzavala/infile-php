@@ -63,7 +63,7 @@ final class StudioServiceProvider extends ServiceProvider
         // Publish UI assets from the agnostic frontend
         if ($app->runningInConsole()) {
             $this->publishes([
-                __DIR__ . '/../../resources/studio-ui' => public_path('fel-studio'),
+                __DIR__ . '/../../resources/studio-ui' => public_path('vendor/fel-studio'),
             ], 'fel-studio-assets');
         }
     }
