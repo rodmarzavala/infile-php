@@ -7,13 +7,23 @@ namespace InfilePhp\Symfony\DependencyInjection;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
+use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 
 /**
  * Loads infile-php services and maps bundle configuration to DI parameters.
  */
-final class InfilePhpExtension extends Extension
+final class InfilePhpExtension extends Extension implements PrependExtensionInterface
 {
+    public function prepend(ContainerBuilder $container): void
+    {
+        // Explicitly register the Twig namespace so it's always found regardless of Symfony version
+        $container->prependExtensionConfig('twig', [
+            'paths' => [
+                __DIR__ . '/../../Resources/views' => 'InfilePhp',
+            ],
+        ]);
+    }
     /**
      * @param array<string, mixed> $configs
      */
