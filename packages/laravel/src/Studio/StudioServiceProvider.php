@@ -19,9 +19,7 @@ final class StudioServiceProvider extends ServiceProvider
         /** @var \Illuminate\Foundation\Application $app */
         $app = $this->app;
 
-        if (!$app->isLocal() && !$app->runningUnitTests()) {
-            return;
-        }
+        // Boot handles routes and everything else
 
         $this->app->singleton(StudioRepository::class);
     }
@@ -31,20 +29,17 @@ final class StudioServiceProvider extends ServiceProvider
         /** @var \Illuminate\Foundation\Application $app */
         $app = $this->app;
 
-        if (!$app->isLocal() && !$app->runningUnitTests()) {
-            return;
-        }
+        // Check access middleware handles authorization for the routes
 
         // Register the event subscriber to capture DTE events
         $this->app->make(Dispatcher::class)->subscribe(StudioEventSubscriber::class);
 
         // Register Studio Routes
-        Route::middleware(['web'])
+        Route::middleware(['web', \InfilePhp\Laravel\Studio\Http\Middleware\Authorize::class])
             ->prefix('fel-studio')
             ->group(function () {
                 // API Routes
                 Route::prefix('api')
-                    ->withoutMiddleware([\Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class])
                     ->group(function () {
                         Route::get('timeline', [TimelineController::class, 'index']);
                         Route::get('health', [\InfilePhp\Laravel\Studio\Http\Controllers\Api\HealthController::class, 'index']);
@@ -60,6 +55,10 @@ final class StudioServiceProvider extends ServiceProvider
 
         /** @var \Illuminate\Foundation\Application $app */
         $app = $this->app;
+
+        if (config('felkit.studio.driver') === 'database') {
+            $this->loadMigrationsFrom(__DIR__ . '/../../database/migrations');
+        }
 
         // Publish UI assets from the agnostic frontend
         if ($app->runningInConsole()) {

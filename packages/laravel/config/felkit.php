@@ -77,4 +77,15 @@ return [
         'enabled' => env('FEL_FALLBACK_ENABLED', true),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | FEL Studio
+    |--------------------------------------------------------------------------
+    | Configure the local development studio timeline storage.
+    | drivers: "sqlite" (default local file) or "database" (main db via migration)
+    */
+    'studio' => [
+        'driver' => env('FEL_STUDIO_DRIVER', 'sqlite'),
+    ],
+
 ];

@@ -61,6 +61,13 @@ final class InstallCommand extends Command
         $this->line('  3. Use Invoice::create()->...->issue() to certify your first DTE.');
         $this->newLine();
 
+        if (config('queue.default') === 'sync' && config('felkit.fallback.enabled', true)) {
+            $this->components->warn('Fallback is enabled but your Queue connection is set to "sync".');
+            $this->line('  If Infile is unreachable, the system will pause the HTTP request instead of queueing it in the background.');
+            $this->line('  <fg=cyan>Action:</> Set QUEUE_CONNECTION=database (or redis) in your .env and run `php artisan queue:work`.');
+            $this->newLine();
+        }
+
         return self::SUCCESS;
     }
 }

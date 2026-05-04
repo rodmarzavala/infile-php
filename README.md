@@ -226,6 +226,9 @@ $response = Fel::certify($dte);
 | `php artisan fel:retry-pending` | Reintenta DTEs en cola por contingencia |
 | `php artisan fel:status` | Verifica disponibilidad de Infile con tiempo de respuesta |
 
+> [!WARNING]
+> Si la contingencia (`FEL_FALLBACK_ENABLED=true`) está activada, asegúrate de tener configurado un worker de colas real (ej. `QUEUE_CONNECTION=database` o `redis`) y ejecutar `php artisan queue:work`. Si usas `sync`, los fallos pausarán la ejecución del request en lugar de encolarse en background.
+
 ### Verificar estado del servicio
 
 ```bash

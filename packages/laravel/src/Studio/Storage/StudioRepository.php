@@ -9,10 +9,17 @@ use PDO;
 
 final class StudioRepository
 {
-    private PDO $db;
+    private ?PDO $db = null;
+    private bool $useDatabaseDriver = false;
 
     public function __construct()
     {
+        $this->useDatabaseDriver = config('felkit.studio.driver') === 'database';
+
+        if ($this->useDatabaseDriver) {
+            return; // Laravel's DB facade will be used
+        }
+
         if (function_exists('app') && app()->runningUnitTests()) {
             $dbPath = ':memory:';
             $isNew = true;
@@ -58,6 +65,24 @@ final class StudioRepository
      */
     public function logTransaction(array $data): void
     {
+        $insertData = [
+            'uuid' => $data['uuid'] ?? null,
+            'serie' => $data['serie'] ?? null,
+            'numero' => $data['numero'] ?? null,
+            'dte_type' => $data['dte_type'] ?? null,
+            'recipient_tax_id' => $data['recipient_tax_id'] ?? null,
+            'idempotency_key' => $data['idempotency_key'] ?? null,
+            'status' => $data['status'] ?? 'issued',
+            'payload' => isset($data['payload']) ? json_encode($data['payload']) : null,
+            'error_message' => $data['error_message'] ?? null,
+            'created_at' => date('Y-m-d H:i:s'),
+        ];
+
+        if ($this->useDatabaseDriver) {
+            \Illuminate\Support\Facades\DB::table('fel_studio_entries')->insert($insertData);
+            return;
+        }
+
         $stmt = $this->db->prepare("
             INSERT INTO timeline (
                 uuid, serie, numero, dte_type, recipient_tax_id, 
@@ -69,16 +94,16 @@ final class StudioRepository
         ");
 
         $stmt->execute([
-            ':uuid' => $data['uuid'] ?? null,
-            ':serie' => $data['serie'] ?? null,
-            ':numero' => $data['numero'] ?? null,
-            ':dte_type' => $data['dte_type'] ?? null,
-            ':recipient_tax_id' => $data['recipient_tax_id'] ?? null,
-            ':idempotency_key' => $data['idempotency_key'] ?? null,
-            ':status' => $data['status'] ?? 'issued',
-            ':payload' => isset($data['payload']) ? json_encode($data['payload']) : null,
-            ':error_message' => $data['error_message'] ?? null,
-            ':created_at' => date('Y-m-d H:i:s'),
+            ':uuid' => $insertData['uuid'],
+            ':serie' => $insertData['serie'],
+            ':numero' => $insertData['numero'],
+            ':dte_type' => $insertData['dte_type'],
+            ':recipient_tax_id' => $insertData['recipient_tax_id'],
+            ':idempotency_key' => $insertData['idempotency_key'],
+            ':status' => $insertData['status'],
+            ':payload' => $insertData['payload'],
+            ':error_message' => $insertData['error_message'],
+            ':created_at' => $insertData['created_at'],
         ]);
     }
 
@@ -87,8 +112,17 @@ final class StudioRepository
      */
     public function getTimeline(): array
     {
-        $stmt = $this->db->query("SELECT * FROM timeline ORDER BY created_at DESC LIMIT 100");
-        $results = $stmt !== false ? $stmt->fetchAll(PDO::FETCH_ASSOC) : [];
+        if ($this->useDatabaseDriver) {
+            $results = \Illuminate\Support\Facades\DB::table('fel_studio_entries')
+                ->orderBy('created_at', 'desc')
+                ->limit(100)
+                ->get()
+                ->map(fn ($item) => (array) $item)
+                ->toArray();
+        } else {
+            $stmt = $this->db->query("SELECT * FROM timeline ORDER BY created_at DESC LIMIT 100");
+            $results = $stmt !== false ? $stmt->fetchAll(PDO::FETCH_ASSOC) : [];
+        }
 
         // Decode JSON payloads
         foreach ($results as &$row) {
@@ -102,6 +136,10 @@ final class StudioRepository
 
     public function clear(): void
     {
-        $this->db->exec("DELETE FROM timeline");
+        if ($this->useDatabaseDriver) {
+            \Illuminate\Support\Facades\DB::table('fel_studio_entries')->truncate();
+        } else {
+            $this->db->exec("DELETE FROM timeline");
+        }
     }
 }

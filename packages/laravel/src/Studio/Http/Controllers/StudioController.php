@@ -19,6 +19,12 @@ final class StudioController extends Controller
 
         $html = File::get($indexPath);
 
+        $html = str_replace(
+            '</head>',
+            '<meta name="csrf-token" content="' . csrf_token() . '">' . "\n" . '</head>',
+            $html
+        );
+
         return response($html)
             ->header('Content-Type', 'text/html')
             ->header('Cache-Control', 'no-cache, no-store, must-revalidate')

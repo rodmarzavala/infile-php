@@ -30,6 +30,12 @@ final class StatusCommand extends Command
             $this->newLine();
             $this->components->info('Infile is reachable. Your FEL integration is ready.');
 
+            if (config('queue.default') === 'sync' && config('felkit.fallback.enabled', true)) {
+                $this->newLine();
+                $this->components->warn('Warning: Fallback is enabled but QUEUE_CONNECTION is "sync".');
+                $this->line('  Failed DTEs will not be retried automatically in the background.');
+            }
+
             return self::SUCCESS;
         } catch (\Throwable $e) {
             $this->components->twoColumnDetail('<fg=red>Infile Certify Endpoint</>', '<fg=red>Unreachable</>');
