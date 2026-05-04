@@ -11,7 +11,9 @@ final class TimelineController
 {
     public function index(StudioRepository $repository): JsonResponse
     {
-        return new JsonResponse($repository->getTimeline());
+        return new JsonResponse([
+            'data' => $repository->getTimeline(),
+        ]);
     }
 
     public function clear(StudioRepository $repository): JsonResponse
