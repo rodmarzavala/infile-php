@@ -6,6 +6,19 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es/1.0.
 
 ---
 
+## [1.3.2] - 2026-05-04
+
+### Agregado
+- **Tests — cobertura ampliada**: De 9 → 82 tests (153 assertions) en `packages/core`. Nuevos suites:
+  - `RecipientTest` — `withTaxId`, `finalConsumer`, fluent setters, `isFinalConsumer`
+  - `InvoiceTest` — builder, `getType`, totales, `validate()` guards, cancel sin emisión previa
+  - `CreditNoteTest` — tipo, `for()`, `reason()`, delegación a factura origen, 3 guards de validación
+  - `DebitNoteTest` — espejo de CreditNote para NDEB
+  - `SmallTaxpayerInvoiceTest` — FPEQ, mismo patrón de builder y guards
+  - `FelConfigTest` — credenciales, todos los defaults (sandbox, unified, 3 retries, fallback), endpoints
+  - `CertificationResponseTest` — propiedades, `remainingCredits()`, default `issuedAt`
+  - `IdempotencyKeyTest` — formato UUID4, unicidad en 50 generaciones, longitud 36
+
 ## [1.3.1] - 2026-05-04
 
 ### Corregido
