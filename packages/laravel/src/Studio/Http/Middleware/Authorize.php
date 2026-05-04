@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace InfilePhp\Laravel\Studio\Http\Middleware;
 
 use Illuminate\Support\Facades\Gate;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class Authorize
 {
