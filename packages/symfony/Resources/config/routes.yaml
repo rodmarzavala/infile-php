@@ -1,11 +1,3 @@
-fel_studio_index:
-    path: /fel-studio/{reactRouting}
-    controller: InfilePhp\Symfony\Studio\Http\Controllers\StudioController::index
-    requirements:
-        reactRouting: '.*'
-    defaults:
-        reactRouting: ''
-    methods: [GET]
 
 fel_studio_api_timeline:
     path: /fel-studio/api/timeline
@@ -31,3 +23,12 @@ fel_studio_api_builder_validate:
     path: /fel-studio/api/builder/validate
     controller: InfilePhp\Symfony\Studio\Http\Controllers\Api\BuilderController::validate
     methods: [POST]
+
+fel_studio_index:
+    path: /fel-studio/{reactRouting}
+    controller: InfilePhp\Symfony\Studio\Http\Controllers\StudioController::index
+    requirements:
+        reactRouting: '.*'
+    defaults:
+        reactRouting: ''
+    methods: [GET]
