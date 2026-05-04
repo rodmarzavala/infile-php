@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { ShieldAlert, Copy, Check } from 'lucide-react';
+import { getApiUrl, getApiHeaders } from '../utils/api';
 
 type Transaction = {
   id: number;
@@ -14,7 +15,7 @@ export default function Interceptor() {
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
-    fetch('/fel-studio/api/timeline')
+    fetch(getApiUrl('/timeline'), { headers: getApiHeaders() })
       .then(res => res.json())
       .then(res => {
         setTransactions(res.data || []);

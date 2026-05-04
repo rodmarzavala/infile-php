@@ -3,6 +3,7 @@ import { Clock, CheckCircle2, XCircle, FileText, FileCode2, Copy, RotateCcw, Rec
 import { translateInfileError } from '../utils/ErrorTranslator';
 import { useNavigate } from 'react-router-dom';
 import { ReceiptPreview } from '../components/ReceiptPreview';
+import { getApiUrl, getApiHeaders } from '../utils/api';
 
 type Transaction = {
   id: number;
@@ -26,7 +27,7 @@ export default function Timeline() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch('/fel-studio/api/timeline')
+    fetch(getApiUrl('/timeline'), { headers: getApiHeaders() })
       .then(res => res.json())
       .then(res => {
         setTransactions(res.data || []);

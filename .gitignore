@@ -3,9 +3,14 @@
 /.php-cs-fixer.cache
 /.phpunit.result.cache
 /node_modules/
+packages/*/node_modules/
 docs/node_modules/
 docs/.vitepress/dist/
 docs/.vitepress/cache/
+packages/studio-ui/dist/
+packages/wordpress/docker-compose.yml
+packages/wordpress/wp_data/
+packages/wordpress/db_data/
 .env
 .env.local
 *.log
@@ -14,3 +19,7 @@ test.php
 Thumbs.db
 /build/
 /dist/
+test-wordpress.sh
+packages/wordpress/.wp-env.json
+packages/wordpress/package.json
+packages/wordpress/package-lock.json

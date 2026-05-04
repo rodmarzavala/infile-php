@@ -3,12 +3,13 @@ import Layout from './Layout';
 
 import { useEffect, useState } from 'react';
 import { CheckCircle, AlertCircle } from 'lucide-react';
+import { getApiUrl, getApiHeaders } from './utils/api';
 
 function Dashboard() {
   const [health, setHealth] = useState<any>(null);
 
   useEffect(() => {
-    fetch('/fel-studio/api/health')
+    fetch(getApiUrl('/health'), { headers: getApiHeaders() })
       .then(res => res.json())
       .then(data => setHealth(data))
       .catch(console.error);

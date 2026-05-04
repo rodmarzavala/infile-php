@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Play, CheckCircle, AlertCircle, Plus, Trash2, Code2, FileCode2 } from 'lucide-react';
 import { translateInfileError } from '../utils/ErrorTranslator';
-
-const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '';
+import { getApiUrl, getApiHeaders } from '../utils/api';
 
 export default function Builder() {
   const [recipient, setRecipient] = useState({
@@ -87,12 +86,9 @@ export default function Builder() {
     setStatus({ type: 'idle', message: '' });
     
     try {
-      const response = await fetch('/fel-studio/api/builder/preview', {
+      const response = await fetch(getApiUrl('/builder/preview'), {
         method: 'POST',
-        headers: { 
-          'Content-Type': 'application/json',
-          'X-CSRF-TOKEN': csrfToken 
-        },
+        headers: getApiHeaders({ 'Content-Type': 'application/json' }),
         body: JSON.stringify(buildPayload()),
       });
       
@@ -128,12 +124,9 @@ export default function Builder() {
     setStatus({ type: 'idle', message: '' });
     
     try {
-      const response = await fetch('/fel-studio/api/builder/validate', {
+      const response = await fetch(getApiUrl('/builder/validate'), {
         method: 'POST',
-        headers: { 
-          'Content-Type': 'application/json',
-          'X-CSRF-TOKEN': csrfToken 
-        },
+        headers: getApiHeaders({ 'Content-Type': 'application/json' }),
         body: JSON.stringify(buildPayload()),
       });
       

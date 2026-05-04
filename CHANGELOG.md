@@ -6,6 +6,17 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es/1.0.
 
 ---
 
+## [1.3.1] - 2026-05-04
+
+### Corregido
+- **WordPress — Emisión de facturas**: Corregido el método `OrderInvoiceHook::issueInvoice()` que llamaba a métodos inexistentes (`getUuid()`, `getSerie()`, `getNumero()`) en `Invoice`. Ahora utiliza correctamente las propiedades del `CertificationResponse` que devuelve `issue()`.
+- **WordPress — Lista de facturas**: Reemplazada la consulta SQL cruda a `wp_posts` (incompatible con HPOS de WooCommerce) por `wc_get_orders()` con `meta_query`. Las facturas emitidas ahora aparecen correctamente en WooCommerce > FEL Invoices.
+- **WordPress — Seguridad**: Los campos `LlaveFirma` y `LlaveApi` en la página de configuración ahora se renderizan como `type="password"` con `autocomplete="new-password"` para evitar exposición visual y autocompletado de credenciales.
+- **WordPress — Dependencias PSR-7**: Reemplazada la implementación custom de PSR-7/PSR-17 (incompatible con `psr/http-message: ^2.0`) por `nyholm/psr7`, que soporta nativamente PSR-7 v1 y v2 en PHP 7.4+.
+
+### Eliminado
+- **WordPress — FEL Studio**: Removido el submenú y la integración de FEL Studio del plugin de WordPress. La SPA de React es incompatible con el sistema de assets de WordPress (conflicto `type="module"` / CORS / CSP). FEL Studio sigue disponible en los adaptadores Laravel y Symfony donde tiene sentido como herramienta de desarrollo. El plugin queda más ligero sin dependencias de Node.js o React.
+
 ## [1.3.0] - 2026-05-04
 ### Agregado
 - **FEL Studio**: Interfaz web local para desarrollo y depuración (Timeline, Builder).
