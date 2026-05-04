@@ -30,40 +30,43 @@ final class StudioEventSubscriber implements EventSubscriberInterface
 
     public function onDteIssued(DteIssued $event): void
     {
-        $payload = $event->payload;
         $this->repository->logTransaction([
-            'uuid' => $payload->uuid,
-            'serie' => $payload->serie,
-            'numero' => $payload->numero,
-            'dte_type' => $payload->type->value,
-            'recipient_tax_id' => $payload->recipientTaxId,
-            'idempotency_key' => $payload->idempotencyKey,
+            'uuid' => $event->uuid,
+            'serie' => $event->serie,
+            'numero' => $event->numero,
+            'dte_type' => $event->dteType->value,
+            'recipient_tax_id' => $event->recipientTaxId,
+            'idempotency_key' => $event->idempotencyKey,
             'status' => 'issued',
-            'payload' => $payload->rawResponse,
+            'payload' => [
+                'event' => 'DteIssued',
+                'xml_certified' => $event->xmlCertified,
+            ],
             'error_message' => null,
         ]);
     }
 
     public function onDteFailed(DteFailed $event): void
     {
-        $payload = $event->payload;
         $this->repository->logTransaction([
-            'dte_type' => $payload->type->value,
-            'recipient_tax_id' => $payload->recipientTaxId,
-            'idempotency_key' => $payload->idempotencyKey,
+            'dte_type' => $event->dteType->value,
+            'recipient_tax_id' => null,
+            'idempotency_key' => $event->idempotencyKey,
             'status' => 'failed',
-            'payload' => $payload->rawResponse,
-            'error_message' => $payload->errorMessage,
+            'payload' => [
+                'event' => 'DteFailed',
+                'exception_class' => $event->previous ? get_class($event->previous) : null,
+            ],
+            'error_message' => $event->errorMessage,
         ]);
     }
 
     public function onFallbackActivated(FallbackActivated $event): void
     {
-        $payload = $event->payload;
         $this->repository->logTransaction([
-            'dte_type' => $payload->type->value,
-            'recipient_tax_id' => $payload->recipientTaxId,
-            'idempotency_key' => $payload->idempotencyKey,
+            'dte_type' => null,
+            'recipient_tax_id' => null,
+            'idempotency_key' => $event->idempotencyKey,
             'status' => 'pending',
             'payload' => null,
             'error_message' => 'Contingencia CAFE activada. Se encoló para reintento.',
@@ -72,11 +75,13 @@ final class StudioEventSubscriber implements EventSubscriberInterface
 
     public function onDteCancelled(DteCancelled $event): void
     {
-        $payload = $event->payload;
         $this->repository->logTransaction([
-            'uuid' => $payload->uuid,
+            'uuid' => $event->uuid,
             'status' => 'cancelled',
-            'payload' => $payload->rawResponse,
+            'payload' => [
+                'event' => 'DteCancelled',
+                'reason' => $event->reason,
+            ],
             'error_message' => null,
         ]);
     }
