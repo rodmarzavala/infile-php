@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace InfilePhp\Laravel\Studio\Http\Controllers\Api;
 
+use Exception;
 use Illuminate\Routing\Controller;
 use InfilePhp\Core\Sat\Rtu;
-use Exception;
 
 final class HealthController extends Controller
 {
@@ -52,7 +52,7 @@ final class HealthController extends Controller
                 'latency_ms' => $latency,
                 'error' => $error,
                 'environment' => env('FEL_ENV', 'sandbox'),
-            ]
+            ],
         ]);
     }
 }

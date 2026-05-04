@@ -46,11 +46,11 @@ final class StudioServiceProvider extends ServiceProvider
                 Route::prefix('api')
                     ->withoutMiddleware([\Illuminate\Foundation\Http\Middleware\VerifyCsrfToken::class])
                     ->group(function () {
-                    Route::get('timeline', [TimelineController::class, 'index']);
-                    Route::get('health', [\InfilePhp\Laravel\Studio\Http\Controllers\Api\HealthController::class, 'index']);
-                    Route::post('builder/preview', [\InfilePhp\Laravel\Studio\Http\Controllers\Api\BuilderController::class, 'preview']);
-                    Route::post('builder/validate', [\InfilePhp\Laravel\Studio\Http\Controllers\Api\BuilderController::class, 'validate']);
-                });
+                        Route::get('timeline', [TimelineController::class, 'index']);
+                        Route::get('health', [\InfilePhp\Laravel\Studio\Http\Controllers\Api\HealthController::class, 'index']);
+                        Route::post('builder/preview', [\InfilePhp\Laravel\Studio\Http\Controllers\Api\BuilderController::class, 'preview']);
+                        Route::post('builder/validate', [\InfilePhp\Laravel\Studio\Http\Controllers\Api\BuilderController::class, 'validate']);
+                    });
 
                 // Catch-all route for the SPA
                 Route::get('/{view?}', [StudioController::class, 'index'])
