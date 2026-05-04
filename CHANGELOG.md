@@ -6,6 +6,13 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/es/1.0.
 
 ---
 
+## [1.3.0] - 2026-05-04
+### Agregado
+- **FEL Studio**: Interfaz web local para desarrollo y depuración (Timeline, Builder).
+- **Seguridad en Studio**: Implementación de Gate de autorización (`viewFelStudio`) para acceso controlado en entornos no locales, y protección nativa CSRF para la SPA en React.
+- **Persistencia Flexible**: Soporte nativo de base de datos (`database` driver) mediante migraciones para el Timeline de eventos, manteniendo retrocompatibilidad con SQLite.
+- **Alertas Proactivas de Contingencia**: Advertencias al usuario en comandos `fel:install` y `fel:status` si el modo contingencia (`fallback`) está activo pero el driver de colas es `sync`.
+
 ## [1.2.0] - 2026-05-03
 ### Agregado
 - **Integración PSR-18, PSR-17 y PSR-7**: El núcleo del SDK ahora es completamente agnóstico al cliente HTTP, eliminando la dependencia dura de Guzzle (`guzzlehttp/guzzle`).
