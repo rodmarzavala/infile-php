@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace InfilePhp\Symfony\EventSubscriber;
 
-use InfilePhp\Core\Dte\Events\DteCancelled;
-use InfilePhp\Core\Dte\Events\DteFailed;
-use InfilePhp\Core\Dte\Events\DteIssued;
-use InfilePhp\Core\Dte\Events\FallbackActivated;
+use InfilePhp\Core\Events\DteCancelled;
+use InfilePhp\Core\Events\DteFailed;
+use InfilePhp\Core\Events\DteIssued;
+use InfilePhp\Core\Events\FallbackActivated;
 use InfilePhp\Symfony\Studio\Storage\StudioRepository;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 

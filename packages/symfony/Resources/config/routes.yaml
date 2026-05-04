@@ -21,3 +21,13 @@ fel_studio_api_health:
     path: /fel-studio/api/health
     controller: InfilePhp\Symfony\Studio\Http\Controllers\Api\HealthController::index
     methods: [GET]
+
+fel_studio_api_builder_preview:
+    path: /fel-studio/api/builder/preview
+    controller: InfilePhp\Symfony\Studio\Http\Controllers\Api\BuilderController::preview
+    methods: [POST]
+
+fel_studio_api_builder_validate:
+    path: /fel-studio/api/builder/validate
+    controller: InfilePhp\Symfony\Studio\Http\Controllers\Api\BuilderController::validate
+    methods: [POST]
