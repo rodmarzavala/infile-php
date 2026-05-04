@@ -245,8 +245,29 @@ final class FelFake
         $instance       = new self();
         self::$instance = $instance;
 
+        // Ensure config is loaded before we mock the client
+        if (InfilePhp::config() === null) {
+            // This should not happen if FelServiceProvider booted
+            throw new \RuntimeException('InfilePhp is not configured.');
+        }
+
+        // Create a Mockery mock of InfileClient
+        $mock = \Mockery::mock(InfileClient::class);
+        $mock->shouldReceive('certify')->andReturnUsing(function ($dte, $idempotencyKey = null) use ($instance) {
+            return $instance->handleCertify($dte);
+        });
+        $mock->shouldReceive('cancel')->andReturnUsing(function ($uuid, $dteType, $reason) use ($instance) {
+            $instance->cancelled[] = ['uuid' => $uuid, 'dteType' => $dteType, 'reason' => $reason];
+        });
+        $mock->shouldReceive('ping')->andReturn(200);
+
         // Swap the real InfileClient binding with this fake
-        InfilePhp::reset();
+        InfilePhp::swapClient($mock);
+
+        // We also swap it in the Laravel container so the Facade works too
+        if (app()->bound(InfileClient::class)) {
+            app()->instance(InfileClient::class, $mock);
+        }
 
         return $instance;
     }
