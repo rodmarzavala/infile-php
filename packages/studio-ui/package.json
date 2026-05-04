@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
+    "postbuild": "cp -r dist/* ../laravel/resources/studio-ui/ && mkdir -p ../symfony/Resources/public/studio-ui && cp -r dist/* ../symfony/Resources/public/studio-ui/",
     "lint": "eslint .",
     "preview": "vite preview"
   },

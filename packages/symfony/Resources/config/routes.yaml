@@ -1,0 +1,23 @@
+fel_studio_index:
+    path: /fel-studio/{reactRouting}
+    controller: InfilePhp\Symfony\Studio\Http\Controllers\StudioController::index
+    requirements:
+        reactRouting: '.*'
+    defaults:
+        reactRouting: ''
+    methods: [GET]
+
+fel_studio_api_timeline:
+    path: /fel-studio/api/timeline
+    controller: InfilePhp\Symfony\Studio\Http\Controllers\Api\TimelineController::index
+    methods: [GET]
+
+fel_studio_api_timeline_clear:
+    path: /fel-studio/api/timeline/clear
+    controller: InfilePhp\Symfony\Studio\Http\Controllers\Api\TimelineController::clear
+    methods: [POST]
+
+fel_studio_api_health:
+    path: /fel-studio/api/health
+    controller: InfilePhp\Symfony\Studio\Http\Controllers\Api\HealthController::index
+    methods: [GET]

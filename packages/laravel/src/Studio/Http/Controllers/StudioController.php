@@ -20,8 +20,8 @@ final class StudioController extends Controller
         $html = File::get($indexPath);
 
         $html = str_replace(
-            '</head>',
-            '<meta name="csrf-token" content="' . csrf_token() . '">' . "\n" . '</head>',
+            ['</head>', '/__FEL_STUDIO_BASE__/'],
+            ['<meta name="csrf-token" content="' . csrf_token() . '">' . "\n" . '</head>', '/vendor/fel-studio/'],
             $html
         );
 

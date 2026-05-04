@@ -31,6 +31,10 @@ final class InfilePhpExtension extends Extension
         $container->setParameter('infile_php.retry', $config['retry'] ?? []);
         $container->setParameter('infile_php.fallback', $config['fallback'] ?? []);
 
+        $studioConfig = $config['studio'] ?? [];
+        $container->setParameter('infile_php.studio.enabled', $studioConfig['enabled'] ?? true);
+        $container->setParameter('infile_php.studio.driver', $studioConfig['driver'] ?? 'sqlite');
+
         $loader = new YamlFileLoader(
             $container,
             new FileLocator(__DIR__ . '/../../Resources/config'),

@@ -5,9 +5,9 @@ import tailwindcss from '@tailwindcss/vite'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), tailwindcss()],
-  base: '/vendor/fel-studio/',
+  base: '__FEL_STUDIO_BASE__',
   build: {
-    outDir: '../laravel/resources/studio-ui',
+    outDir: 'dist',
     emptyOutDir: true
   }
 })
